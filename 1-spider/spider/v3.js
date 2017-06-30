@@ -18,17 +18,17 @@ var keywords = require('./data/input');//输入的文字
 
 //生成城市名和adcode的列表
 var adcodeMap = {};
-cities
   .filter(function(d) {
     return d.level === 'city';
   })
   .forEach(function(d) {
     var str = d.name.substring(0, 2);
+
     adcodeMap[str] = d.adcode;
   });
 
 
-//获取爬取url的函数
+//获取爬取url的函数  only get url
 function getURL(adcode, keyword) {
   return encodeURI('http://ditu.amap.com/service/poiInfo?query_type=TQUERY&pagesize=100&pagenum=1&cluster_state=4&city=' + adcode + '&keywords=' + keyword);
 }
@@ -87,17 +87,17 @@ function save(ds){
 // });
 
 // timeout模式 是一种简单的方式，1s的时候请求，2s的时候请求，1000s的时候请求。
-var timeInterval = 1000;
-keywords.forEach(function(keyword, i){
-  var str = keyword.substring(0, 2);
-  var adcode = adcodeMap[str];
-  if(!adcode) return;
-  var url = getURL(adcode, keyword);
-  var timeout = timeInterval * i;
-  setTimeout(function(){
-     query(url);
-  }, timeout);
-});
+// var timeInterval = 1000;
+// keywords.forEach(function(keyword, i){
+//   var str = keyword.substring(0, 2);
+//   var adcode = adcodeMap[str];
+//   if(!adcode) return;
+//   var url = getURL(adcode, keyword);
+//   var timeout = timeInterval * i;
+//   setTimeout(function(){
+//      query(url);
+//   }, timeout);
+// });
 
 
 

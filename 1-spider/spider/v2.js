@@ -20,15 +20,15 @@ request.get(url, function(e, res, body) {
   if (!e && res.statusCode == 200) {
     body = JSON.parse(body);
     data = body.data;
-    list = data[0].list;
+    list = data.poi_list;
     d = list[0];
-    
+     console.log("d : ",d)
     //在很多爬虫框架里，这个result被叫做item
     result = {
       city: d.cityname,
       name: d.name,
-      lat: d.location.lat,
-      lng: d.location.lng,
+      lat: d.latitude,
+      lng: d.longitude,
       tel: d.tel
     };
 

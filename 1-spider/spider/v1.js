@@ -11,13 +11,13 @@ request.get(url, function(e, res, body) {
   if (!e && res.statusCode == 200) {//e.statusCode为状态码，也是评估返回是不是有问题
     body = JSON.parse(body);//返回的数据是字符串，需要转化为json格式
     data = body.data;
-    list = data[0].list;//这几部可以从chrome的network里，先看看json的结构
+    list = data.poi_list;//这几部可以从chrome的network里，先看看json的结构
     d = list[0];
     console.log('返回的数据是: \n\n', {
       city: d.cityname,
       name: d.name,
-      lat: d.location.lat,
-      lng: d.location.lng,
+      lat: d.entrances[0].latitude,
+      lng: d.entrances[0].longitude,
       tel: d.tel
     }, '\n\n');
   }
