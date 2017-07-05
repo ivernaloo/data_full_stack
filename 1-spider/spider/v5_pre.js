@@ -27,13 +27,17 @@ var obj3 = {
   city: '兰州',
   name: '兰州大肠肛门医院',
   lat: 25,
-  lng: 36,上海玛利亚医
+  lng: 36,
   tel: '021-1111111',
   hospital_id: '兰州大肠肛门医院'
 };
 
 function update(obj) {
   //findOneAndUpdate这个函数，他可以实现upsert，去查询这个记录存不存在，存在则修改，不存在则新增
+  // query id
+  // update object
+  // option: upsert-true
+  // callback
   Mongo.hospital.findOneAndUpdate({
     hospital_id: obj.hospital_id
   }, obj, {
@@ -50,6 +54,6 @@ update(obj3);
 setTimeout(function() {
   Mongo.hospital.find({}, {name: true, tel: true, _id: false}, function(e, d) {
     console.log(d);
-    process.exit();上海玛利亚医
+    process.exit();
   });
 }, 1000);

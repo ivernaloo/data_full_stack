@@ -10,13 +10,14 @@ var fs = require('fs');
 
 var Mongo = require('./mongo');
 
-var poolCount = 10;
-var timeout = 100;
+var poolCount = 10; // pool limited?
+var timeout = 100;  // time out
 
+// constructor
 function Pool(source){
-  this.source = source;
-  this.reset();
-  this.init();
+  this.source = source; // address source list
+  this.reset(); // reset
+  this.init(); // initialize
 }
 
 //获取url的函数
@@ -26,14 +27,16 @@ function getURL(address) {
 
 Pool.prototype = {
   reset: function(){
-    this.spiderIndex = 0;
-    this.queryingIndex = 0;
+    this.spiderIndex = 0; // set the spider index
+    this.queryingIndex = 0; // query index
   },
   init: function(){
-    this.querying = [];
+    this.querying = []; // queue list
   },
   process: function(e, res, body, obj){//处理数据，处理完了调用 this.onProcessed(), 在这里发起新的请求
+                                       // proceed the raw data to format data
     if (!e && res.statusCode == 200) {
+      console.log("..................");
       body = JSON.parse(body);
       data = body.geocodes;
       if(!data || !data[0]) return this.onProcessed();
@@ -58,21 +61,29 @@ Pool.prototype = {
       this.query();
     }.bind(this), timeout);
   },
+  // entry function for query logic
   query: function(){//query()是发起请求，完了调用process()一下然后再看看是不是池子没满，没满的话调用自己this.query();
-    if (this.queryingIndex > poolCount) return;
-    var obj = this.source[this.spiderIndex];
-    console.log(obj)
-    var url = getURL(obj.address);
+    if (this.queryingIndex > poolCount) return; // limited the poolCount equal 10
+    var obj = this.source[this.spiderIndex]; // iterate the address source list
+                                             // the
+    console.log(obj);
+    
+    var url = getURL(obj.address); // query the information use location name
+                                   // build the query url
+
     request.get(url, function(e, res, body){
-      this.process(e, res, body, obj);
+      this.process(e, res, body, obj); // parse the url and insert the location object
+                                       // parse the raw data to format
+                                       // call itself
     }.bind(this));
-    this.spiderIndex = this.spiderIndex + 1;
-    this.queryingIndex = this.queryingIndex + 1;
-    if(this.queryingIndex < poolCount) this.query();
+
+    this.spiderIndex = this.spiderIndex + 1;  // index count
+    this.queryingIndex = this.queryingIndex + 1;  // index count
+    if(this.queryingIndex < poolCount) this.query(); // call it self
   }
 };
 
-
+// update and insert into mongoDB
 function update(obj) {
   Mongo.community.findOneAndUpdate({
     community_id: obj.community_id

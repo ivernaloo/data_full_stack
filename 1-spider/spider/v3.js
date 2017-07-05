@@ -18,7 +18,7 @@ var keywords = require('./data/input');//输入的文字
 
 //生成城市名和adcode的列表
 var adcodeMap = {};
-  .filter(function(d) {
+cities.filter(function(d) {
     return d.level === 'city';
   })
   .forEach(function(d) {

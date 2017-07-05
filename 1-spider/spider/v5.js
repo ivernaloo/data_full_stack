@@ -26,6 +26,7 @@ function getURL(keyword) {
   str = keyword.substring(0, 2);
   adcode = adcodeMap[str];
   if (!adcode) return;
+  // http://ditu.amap.com/service/poiInfo?query_type=TQUERY&pagesize=100&pagenum=1&cluster_state=4&city=330100&keywords=%E5%8C%BB%E9%99%A2
   return encodeURI('http://ditu.amap.com/service/poiInfo?query_type=TQUERY&pagesize=100&pagenum=1&cluster_state=4&city=' + adcode + '&keywords=' + keyword);
 }
 
@@ -52,16 +53,18 @@ function query(next) {
     if (!e && res.statusCode == 200) {
       body = JSON.parse(body);
       data = body.data;
-      if(!data || !data[0]) return nextQuery(next);
-      list = data[0].list;
+      console.log("data : ", data);
+
+      if(!data ) return nextQuery(next);
+      list = data.poi_list;
       if(!list || !list[0]) return nextQuery(next);
       //
       d = list[0];
       obj = {
         city: d.cityname,
         name: d.name,
-        lat: d.location.lat,
-        lng: d.location.lng,
+        lat: d.entrances[0].latitude,
+        lng: d.entrances[0].longitude,
         tel: d.tel,
         hospital_id: keyword
       };

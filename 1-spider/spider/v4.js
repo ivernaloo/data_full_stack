@@ -39,30 +39,35 @@ function query(done) {
   spiderIndex++;
   if(spiderIndex >= queryN) return done();
   request.get(url, function(e, res, body) {
+    console.log("url : ", url)
+
     if (!e && res.statusCode == 200) {
-      body = JSON.parse(body);
+      body = JSON.parse(body); // get the gis resource
       data = body.data;
-      if(!data || !data[0]) return query(done);
-      list = data[0].list;
-      if(!list || !list[0]) return query(done);
+
+      if(!data) return query(done); // jump out from the logic
+      list = data.poi_list;
+      if(!list || !list[0]) return query(done); // jump out from the logic
       //
       d = list[0];
+
       obj = {
         city: d.cityname,
         name: d.name,
-        lat: d.location.lat,
-        lng: d.location.lng,
+        lat: d.entrances[0].latitude,
+        lng: d.entrances[0].longitude,
         tel: d.tel
       };
+      
       //
       spiderSuccessIndex++;
-      console.log(spiderSuccessIndex + '/' + spiderIndex + '|' + queryN);
+      console.log('Spider成功的次数 ：' + spiderSuccessIndex + '/' + spiderIndex + ' | '  + ' Query的总次数 ：' +  queryN);
       result.push(obj);
       save(result);
-      return query(done);
+      return query(done); // jump out from the logic
     } else {
       console.log('错误');
-      return query(done);
+      return query(done); // jump out from the logic
     }
   });
 }
