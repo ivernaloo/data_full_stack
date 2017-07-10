@@ -414,7 +414,8 @@ create extension if not exists pg_jieba;
 
 --== 认识unnest
 SELECT '{"a", "b", "c"}'::text[];
-select unnest('{"a", "b", "c"}'::text[]);
+
+ unnest('{"a", "b", "c"}'::text[]);
 
 select to_tsvector('jiebacfg','上海交通大学闵行园区32号楼');
 select UNNEST(regexp_split_to_array(regexp_replace(to_tsvector('jiebacfg','上海交通大学闵行园区32号楼')::text,'(:\d+)', '', 'g'), ' '));

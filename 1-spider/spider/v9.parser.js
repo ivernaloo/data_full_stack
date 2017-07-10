@@ -30,12 +30,12 @@ function parser(e, res, body){
     var districtName = infoNode.attr('districtname');
     var plateName = infoNode.attr('platename');
     var communityId = node.find('.pic-panel').find('a').attr('key');
+    // build district infomation
     var result = {
       community_id: communityId,
       lat: lat,
       lng: lng,
       plate: plateName,
-      community_id: communityId,
       district_name: districtName,
       community_name: communityName
     };

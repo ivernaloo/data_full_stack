@@ -47,7 +47,7 @@ Pool.prototype = {
     if (this.queryingIndex > poolCount) return;
     var url = this.urls[this.spiderIndex];
     request.get(url, function(e, res, body){
-      this.process(e, res, body);
+      this.process(e, res, body); // parser the html
     }.bind(this));
     this.spiderIndex = this.spiderIndex + 1;
     this.queryingIndex = this.queryingIndex + 1;

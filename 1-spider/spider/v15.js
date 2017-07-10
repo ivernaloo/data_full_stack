@@ -16,6 +16,7 @@ var data, list, d, result;
 var proxy = `http://${proxy.host}:${proxy.port}`;//es6的字符串模板
 console.log(`使用代理 ${proxy} 访问网站`);
 
+// default use proxy
 request
 .defaults({
 	proxy: proxy

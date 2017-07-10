@@ -41,7 +41,7 @@ page.open('http://sh.lianjia.com/', function() {
 	//正在登录
 	setTimeout(function() {//登录之中截屏一次
 		console.log('login ing..');
-		page.render('./img/login_ing.jpg');
+		page.render('./img/login_ing.jpg'); //截屏
 	}, 500);
 	//
 	setTimeout(function() {//登录结束截屏一次，证明登录成功
