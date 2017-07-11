@@ -17,7 +17,7 @@
 </head>
 <body>
   <div class="container"></div>
-  <script src="./../libs/d3.min.js"></script>
+  <script src="libs/d3.min.js"></script>
   <script type="text/javascript">
   var container = document.getElementsByClassName('container')[0];
   var width = container.offsetWidth;
@@ -30,7 +30,7 @@
   // var g = svg.append('g');
 
   //绘制地图的元素
-  var projection = d3.geoMercator();
+  var projection = d3.geoMercator(); //  the spherical Mercator projection 球形映射
   var path = d3.geoPath().projection(projection);
 
   //获取数据

@@ -365,15 +365,17 @@ CSV HEADER;
 DROP TABLE IF EXISTS shanghai_od_subway;
 CREATE TABLE shanghai_od_subway AS
 (SELECT * FROM (
-SELECT
-id,
-TIME AS to_t, site AS to_p,
-row_number() OVER (PARTITION BY id ORDER BY TIME) AS idx,
-lag(TIME) OVER (PARTITION BY id ORDER BY TIME) AS from_t,
-lag(site) OVER (PARTITION BY id ORDER BY TIME) AS from_p
-FROM card_info
-WHERE TYPE = '地铁'
-ORDER BY id, TIME DESC
+    SELECT
+        id,
+        TIME AS to_t, site AS to_p,
+
+        row_number() OVER (PARTITION BY id ORDER BY TIME) AS idx,
+        lag(TIME) OVER (PARTITION BY id ORDER BY TIME) AS from_t,
+        lag(site) OVER (PARTITION BY id ORDER BY TIME) AS from_p
+
+    FROM card_info
+    WHERE TYPE = '地铁'
+    ORDER BY id, TIME DESC
 ) AS tbs
 WHERE idx % 2 = 0);
 
@@ -415,7 +417,7 @@ create extension if not exists pg_jieba;
 --== 认识unnest
 SELECT '{"a", "b", "c"}'::text[];
 
- unnest('{"a", "b", "c"}'::text[]);
+unnest('{"a", "b", "c"}'::text[]);
 
 select to_tsvector('jiebacfg','上海交通大学闵行园区32号楼');
 select UNNEST(regexp_split_to_array(regexp_replace(to_tsvector('jiebacfg','上海交通大学闵行园区32号楼')::text,'(:\d+)', '', 'g'), ' '));
